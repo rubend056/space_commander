@@ -8,7 +8,9 @@ use bevy::{
 /**
  * Implementing base units as 10*GameUnits
  */
-static GUM: f32 = 10.;
+static GUM: f32 = 20.;
+static HC: f32 = 1.;
+static WC: f32 = 1.;
 
 pub struct MVP0;
 impl Plugin for MVP0 {
@@ -51,10 +53,16 @@ impl MVP0 {
             let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
             mesh.insert_attribute(
                 Mesh::ATTRIBUTE_POSITION,
-                vec![[-1.0, -1.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0]],
+                vec![[-0.5, -0.5, 0.0], [0.5,-0.5, 0.0], [0.0,0.5, 0.0]] ,
             );
-						mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, vec![[-1.0, -1.0, 0.0], [-1.0, -1.0, 0.0], [-1.0, -1.0, 0.0]]);
-						mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, vec![[0.0, 0.0], [1.0, 0.0], [0.5, 1.0]]);
+            mesh.insert_attribute(
+                Mesh::ATTRIBUTE_NORMAL,
+                vec![[-1.0, -1.0, 0.0], [-1.0, -1.0, 0.0], [-1.0, -1.0, 0.0]],
+            );
+            mesh.insert_attribute(
+                Mesh::ATTRIBUTE_UV_0,
+                vec![[0.0, 0.0], [1.0, 0.0], [0.5, 1.0]],
+            );
             mesh.set_indices(Some(Indices::U32(vec![0, 1, 2])));
             mesh
         }
@@ -62,8 +70,8 @@ impl MVP0 {
         commands.spawn_bundle(MaterialMesh2dBundle {
             mesh: meshes.add(create_triangle()).into(),
             transform: Transform::default()
-                .with_translation(Vec3::new(10., 0., 0.))
-                .with_scale(Vec3::splat(128. / 5.)),
+                .with_translation(Vec3::new(10., 0., 0.) * GUM) 
+                .with_scale(Vec3::splat(GUM)),
             material: materials.add(ColorMaterial::from(Color::TEAL)),
             ..default()
         });
